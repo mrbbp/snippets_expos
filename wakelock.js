@@ -1,4 +1,15 @@
 /* copier-coller dans le script */
+/* ne fonctionne que sur 
+  - Chrome 85 sur android (Android 5)
+  - Chrome 84 sur Desktop
+  versions depuis juin 2020
+  
+  NE FONCTIONNE PAS sur
+  - Safari
+  - Firefox
+  - Android Browser
+  - Android 4.4 (chrome 81)
+*/
 
 let wakeLock = null;
 const requestWakeLock = async () => {
