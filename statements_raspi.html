@@ -1,0 +1,271 @@
+<!--
+  code écrit pour expo idem+arts - Maubeuge Déc.2020
+  Statements : diffusée sur pizero + écran HD en verticale
+  ©ericchoisy.fr - 201025
+
+  - tire au hasard parmis les statements (20) visibles, s'arrête quand l'écran est rempli
+  - des "peut-être" (51) sont ajoutés ou pas à certains endroits dans les statements
+  - un fond de couleur est choisi parmis les couleurs de la collection Trophée de Clairfontaine
+
+  TODO: afficher les statements 1 par 1
+ -->
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+      @font-face {
+        font-family: "Migra Extralight Italic";
+        src: url(fonts/MigraItalic-ExtralightItalic.woff) format("woff");
+      }
+      @font-face {
+        font-family: "Migra Extralight";
+        src: url(fonts/Migra-Extralight.woff) format("woff");
+      }
+      @font-face {
+        font-family: "Migra Italic";
+        src: url(fonts/MigraItalic-Italic.woff) format("woff");
+      }
+      @font-face {
+        font-family: SyneItalic;
+        font-weight: 400;
+        /* font-style: italic; */
+        src: url(fonts/Syne-Italic.woff2) format("woff2");
+      }
+
+      * { margin:0; padding: 0; }
+    html { font-size: 100%; background-color: #f0f0f0;/* 1rem = 1em = 16px */}
+      body {
+        /* display: flex; */
+        background-color: #fff;
+        /* height: 70vh; */
+        height: 100vh;
+        width: 100vw;
+        /* deco */
+        background-color: #fff;
+        color: #444;
+        /* font-family: SourceSansVariable; */
+        font-weight: 100;
+        overflow-y: visible;
+        font-size: calc(4rem / 3);
+        line-height: 120%;
+      }
+      main {
+        /* background-color: rgba(255,255,0,.3); */
+        min-height: calc(100vh - 9rem);
+        padding: 5rem 3rem 3rem 4rem;
+      }
+      ol {
+        font-family: "Migra Extralight";
+        font-size: 4rem;
+        line-height: 77px;
+        margin-top: 35px;
+        /* margin-top: 10px */
+      }
+      li {
+        list-style: none;
+        margin-top: 25px;
+      }
+      li::before {
+        content: attr(data-num)".\a0\a0\a0";
+        font-size: 1.5rem;
+        font-family: "Migra Italic";
+        /* margin-right: 1rem; */
+        margin-left: -1rem;
+        line-height: normal;
+      }
+      ol span {
+        font-family: "Migra Italic";
+        margin-right: 3px;
+        transition: all 100ms ease-in-out;
+      }
+      main h2 {
+        font: 8rem/6rem SyneItalic;
+        margin-top: -14px;
+        font: 10rem SyneItalic;
+        margin-top: -48px;
+      }
+
+      main h2 span {
+        /* font-family: SchnyderWildeLight; */
+        font-family: "Migra Extralight Italic";
+        font-size: 2rem;
+        font-variant: lining-nums;
+        vertical-align: bottom;
+      }
+      main .sac {
+        background-color: #333;
+        color: #fff;/*#f80;*/
+        border-radius: 2rem;
+        line-height: 3rem;
+        padding: 0 .75rem;
+        margin-top: 76px;
+        position: absolute;
+        top: 0;
+        margin-left: 1rem;
+        margin-top: 102px;
+        margin-top: calc(102px + 2rem);
+      }
+      main .chiffre {
+        padding-top: 5px;
+        display: block;
+        margin: 0 10px;
+      }
+      .espfin {
+        margin-right: .33rem;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h2>Statements</h2>
+      <ol></ol>
+    </main>
+  </body>
+  <!-- <script src="js/laLigneDeBase.js"></script> -->
+   <script>
+
+    // const ldb = console.log(laLigneDeBase.draw({'pattern': 3,'style':'solid','under':"main", 'margin':108, 'colorM':'rgba(255, 100, 217,.66)','color':'rgba(0,176,228,.66)'}));
+    // const ldb = ligneDeBase.show({'pattern': 3,'style':'dotted', 'level':"up"});
+
+
+    // met la cap en début de phrase
+    const capitalise = (s) => {
+      if (typeof s !== 'string') return '';
+      return s.charAt(0).toUpperCase() + s.slice(1);
+    };
+
+    const texte= "### je n'arriverais pas à la fin de ce texte.<br>### je ne saurais pas tout écrire cette fois.<br>### je m'inquiète pour rien. ### rien n'arrivera.<br>### le virus ne tuera pas assez. ### il en restera toujours pour nous gâcher le silence, nous gâcher la musique, nous gâcher les paysages.<br>### les cons, un jour, vont disparaître et moi en même temps.<br>### la nuit est le meilleur endroit pour lire, le meilleur endroit pour écrire.<br>### je n'écris qu'à toi. ### tu ne me lis pas.<br>### je ne suis pas le poète qui brûlera ses carnets.<br>### le silence de la nuit est propice aux décès, #aux meurtres.<br>### par chance les moustiques ne savent pas me sucer, me sucent mal  ou ne me sucent pas du tout.<br>### la nuit les soucis se ferment et s'évanouissent, comme les lettres du fisc ou les vampires à l'aube.<br>### je vais continuer à coucher les feuilles d'un graphite B ou 2B. ### j'appuie trop sur mes crayons, # les pointes plus sèches ne sont pas faites pour moi. ### j'écris mal. ### je ne sais pas écrire.<br>### je devrais fleurir les tombes de soldats inconnus les veilles de commémoration. ###ils ne comprendraient pas.<br>### la musique que je veux mettre sur les textes sera syncopée mais dansante. ###elle fera comme un paysage sonore des bouts de vie que je capture avec mon enregistreur numérique.<br>### la fin n'a pas les moyens qu'elle voudrait pour nous mettre la claque méritée. ###une seule claque ne suffira pas. ###il faudra s'y reprendre en plusieurs fois.<br>### lire la poésie n'est pas suffisant. ### regarder la peinture non plus. ###il faut les mettre dans la bouche pour comprendre ou pour savoir; ce qui n'est pas la même chose. ###en en étant plein, physiquement plein, comme une dinde de farce aux petits légumes et herbes, on en prend le goût et ##on est meilleur après.<br>### ce n'est pas l'intelligence qui compte. ### ce n'est pas l'argent non plus. ###on nous a menti et ##on ne veut pas le lire, le dire parce qu'on nous a bien appris. ###on ressemble aux 3 singes dans la vitrine sous la télé de mamie. ###on est sourd, ###on est aveugle, ###on se ferme la bouche pour ne pas vomir.<br>### voter ne changerait rien, ### ne pas voter, ne changera rien non plus. ### secrètement, en regardant les enfants jouer dans la prairie ou dans les arbres, en s'allongeant nu avec la personne qu'on aime, qu'on désire, ### ça perd de son importance et ça devient rien.<br>### le monde ne s'étend pas au delà de la perception de nos sens. ### je deviens sourd pour ça.<br>### vieillir c'est ramener le monde autour de soi et rien que ça. ### quand le monde tient tout en soi, c'est qu'on est mort. ### je peux mourir bientôt alors. #.<br>### je mentirai encore.###";
+
+    // gestion du numéro de poème
+    const tirages = [];
+    if (localStorage.numStatements) {
+      localStorage.numStatements++;
+    } else {
+      localStorage.numStatements=1;
+    }
+    // place le titre
+    document.querySelector("h2").innerHTML = "Statements <span class='sac'><span class='chiffre'>#"+localStorage.numStatements+"</span></span>";
+
+    // couleurs pages
+    const coul = ["#fbA244","#A0D1E5","#b9DCC4","#ffbcfd","#fdc700","#53C0D5","#F7EAA7","#C9C6E0","#EEC1DA","#F9D1C5"];
+
+    const coulFond = coul[Math.floor(Math.random()*coul.length)];
+    console.log(coulFond);
+    document.body.style.backgroundColor = coulFond;
+    document.querySelector("main .sac").style.color = coulFond;
+
+    let texteP1 = "";
+    let pos = texte.indexOf("###");
+    while ( pos != -1 ) {
+      const oldPos = pos;
+      pos = texte.indexOf("###",oldPos+3 );
+      const apres = texte.substring(oldPos+3, pos);
+      // s'arrête avant la derniere occurence
+      if (pos !=-1) {
+        if (Math.round(Math.random())==1) {
+          // cherche les espaces
+          if (!apres.substring(0,1).match(/ /g)) {
+            //console.log("yop",apres.substring(0,5));
+            texteP1 += "peut-être qu'"+apres;
+          } else {
+            texteP1 += "peut-être que"+apres;
+          }
+          //console.log(pos, texte.substring(pos+3,pos+4),texteP1);
+        } else {
+          texteP1 += apres;
+        }
+      }
+    }
+//     No space<br>
+// &#8201;Thin space<br>
+// &#8194;En space<br>
+// &#8195;Em space<br>
+
+    //console.log("fin traitement p1 -> texteP1",texteP1);
+    /* fin traitement 1 */
+    // supprimer les  doubles espaces
+    texteP1 =  texteP1.replace(/\s{2}/gm," ");
+    // remplace les <br> et sauts de lignes
+    texteP1 =  texteP1.replace(/<br>/gm,"@");
+    texteP1 =  texteP1.replace(/@\s/gm,"@");
+    // remplace les ## par &&
+    texteP1 =  texteP1.replace(/##/gm,"&&");
+    // ajoute les "peut-être" au hasard et remets les ##
+    texteP1 = texteP1.replace(/#/g,(Math.round(Math.random())==1) ?"peut-être":"").replace(/&&/gm,"##");
+    // supprime les phrases vides (la dernière)
+    texteP1 =  texteP1.replace(/\.\s+\./gm,". ");
+
+    const listePhrases = texteP1.split(".");
+    const listePhrasesRet = [];
+    for (let phrase of listePhrases) {
+      pos = phrase.indexOf("##");
+      if (pos != -1) {
+        console.log(pos, phrase.substring(2,5));
+        if (phrase.substring(2,5) == "eut") {
+          console.log("match:"+phrase.substring(pos+2,pos+3));
+          phrase = phrase.replace(/##/g,(phrase.substring(pos+2,pos+3) == " ")?"que":"qu'");
+        } else {
+          phrase = phrase.replace(/##/g,"");
+        }
+      }
+      listePhrasesRet.push(phrase);
+    }
+    texteP1 = listePhrasesRet.join(".");
+    console.log(listePhrasesRet);
+
+    /* traitement des majuscules après un . */
+    pos = texteP1.indexOf(".");
+    while ( pos != -1 ) {
+      //console.log(pos, texteP1.substring(pos+2,pos+3))
+      if (texteP1.substring(pos+2,pos+3) != " ") {
+        if (texteP1.substring(pos+2,pos+3) != texteP1.substring(pos+2,pos+3).toUpperCase()) {
+          texteP1 = texteP1.substring(0,pos+2)+ texteP1.substring(pos+2,pos+3).toUpperCase() + texteP1.substring(pos+3);
+        }
+      } else {
+        if (texteP1.substring(pos+3,pos+4) != texteP1.substring(pos+3,pos+4).toUpperCase()) {
+          texteP1 = texteP1.substring(0,pos+3)+ texteP1.substring(pos+3,pos+4).toUpperCase() + texteP1.substring(pos+4);
+        }
+      }
+      pos = texteP1.indexOf(".", pos+1);
+    }
+    /* fin traitement des majuscules après un . */
+    // place les paragraphes dans une liste html
+    const listesStatements = texteP1.split("@");
+    const liste = document.querySelector("ol");
+    let compteur = 1;
+    for (let ph of listesStatements) {
+      const item = document.createElement("li");
+      item.style.display = (Math.random()>.3) ?"none" :"list-item";
+      item.dataset.num = compteur++;
+      // met la majuscule au début
+      ph = capitalise(ph.replace(/^\s/,""));
+      // 1- ajoute les span autour de "peut-etre qu"
+      // 2- nettoie les espaces avant un point.
+      // 3- ajoute un espace fin (css) après apostrophe italique
+      item.innerHTML = ph.replace(/^\s/,"").replace(/((P|p)eut-être)( qu'| que|)(\s|)/gm,"<span>$1$3</span> ").replace(/\s\./gm,".").replace(/\'(\s|)(<\/span>)(\s|)/gm,"’$2<span class='espfin'></span>");
+      // ajoute au DOM
+      liste.appendChild(item);
+      // cache ce qui dépasse de la page
+      if (document.querySelector("main").offsetHeight>window.innerHeight) {
+        item.style.display = "none";
+      }
+    }
+    // empêche mise en veille.
+    // let wakeLock = null;
+    // const requestWakeLock = async () => {
+    //   try {
+    //     wakeLock = await navigator.wakeLock.request('screen');
+    //     document.body.textContent = 'Wake Lock is active';
+    //     console.log('Wake Lock is active');
+    //   } catch (e) {
+    //     document.body.textContent = `${e.name}, ${e.message}`;
+    //     console.error(`${e.name}, ${e.message}`);
+    //   }
+    // };
+    // requestWakeLock();
+    const timer = setInterval( () => {location.reload()}, 15000);
+  </script>
+</html>
